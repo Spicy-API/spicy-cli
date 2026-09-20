@@ -1,6 +1,6 @@
 {
   "name": "@spicyapi/cli",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Official command-line client for SpicyAPI",
   "type": "module",
   "license": "MIT",
