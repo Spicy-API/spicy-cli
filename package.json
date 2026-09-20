@@ -1,0 +1,52 @@
+{
+  "name": "@spicyapi/cli",
+  "version": "0.5.4",
+  "description": "Official command-line client for SpicyAPI",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spicy-API/spicy-cli.git"
+  },
+  "homepage": "https://spicyapi.ai",
+  "bugs": {
+    "url": "https://github.com/Spicy-API/spicy-cli/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "main": "./dist/src/cli/index.js",
+  "types": "./dist/src/cli/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/cli/index.d.ts",
+      "import": "./dist/src/cli/index.js"
+    }
+  },
+  "bin": {
+    "spicyapi": "dist/src/cli/index.js"
+  },
+  "files": [
+    "dist/src",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/generate-package-version.mjs && tsc -p tsconfig.json",
+    "typecheck": "node scripts/generate-package-version.mjs && tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test dist/test/*.test.js"
+  },
+  "dependencies": {
+    "@spicyapi/sdk": "^0.7.0",
+    "commander": "15.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "prettier": "3.9.6",
+    "typescript": "5.9.3"
+  }
+}
