@@ -236,6 +236,12 @@ Every command has built-in help: `spicyapi <command> --help`.
 | `SPICY_API_KEY`                                | Every command except `status`, `docs search` and `webhooks verify`          |
 | `SPICY_WEBHOOK_SECRET`                         | Default secret variable for `webhooks verify`                               |
 | `SPICY_API_BASE_URL`, `SPICY_SERVICE_BASE_URL` | Optional address overrides; HTTPS only (plain HTTP is allowed for loopback) |
+| `HTTPS_PROXY`, `HTTP_PROXY`, `NO_PROXY`        | Send requests through an HTTP(S) proxy, the same variables curl reads       |
+
+Proxy variables work on Node.js 22.21+ or 24+. Node.js's built-in `fetch` ignores them unless it
+was started with `NODE_USE_ENV_PROXY=1`, so when the CLI finds an `http://` or `https://` proxy it
+restarts itself once with that switch on. Set `NODE_USE_ENV_PROXY=0` to always connect directly.
+`socks5://` proxies are not supported.
 
 ### Catalog and account
 
@@ -514,7 +520,10 @@ first, give each logical generation its own fixed `--idempotency-key`, read `sta
 | `SPICY_API_KEY is required for authenticated API operations`                    | The key is not set in this terminal window; follow the `Next:` line, or open a new window after setting it permanently          |
 | `API key format is not recognized` / `Credentials are invalid or expired` (401) | Follow the `Next:` line: fix the variable's value, or create a new key                                                          |
 | `Insufficient balance` or a spend-cap message (402)                             | Add funds, or raise the key's cap; asking again does not help                                                                   |
-| 403                                                                             | The key's model or IP allowlist blocks this request                                                                             |
+| 403 with `40301` / `40302`                                                      | The key's model or IP allowlist blocks this request                                                                             |
+| 403 with `40310`                                                                | Verify your account email: open the link we sent, or send a new one from the console                                            |
+| `Refused before reaching SpicyAPI (HTTP 403)`                                   | Something between you and the API answered instead; the message quotes what it said                                             |
+| `… is set, but this request did not use it`                                     | Your proxy variable was ignored: update Node.js to 22.21+ or 24+, or run with `NODE_USE_ENV_PROXY=1`                            |
 | 404                                                                             | Wrong model or task id, or a task created with another API key; `spicyapi models list` shows callable ids                       |
 | 400, or `--input-file is not valid JSON`                                        | Compare the input with `models get <model> --json`; use straight quotes; on Windows save as UTF-8 (Notepad), not UTF-16 via `>` |
 | `billable command requires an interactive confirmation or --yes`                | Run it in a terminal, or add `--yes` once you know the price                                                                    |

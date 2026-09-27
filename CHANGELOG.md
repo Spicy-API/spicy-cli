@@ -1,5 +1,19 @@
 # @spicyapi/cli
 
+## 0.5.7
+
+### Patch Changes
+
+- Honor `HTTPS_PROXY`, `HTTP_PROXY` and `NO_PROXY` like curl does. Node.js's built-in `fetch`
+  ignores them unless the process starts with `NODE_USE_ENV_PROXY=1`, and nothing can switch that
+  on afterwards, so a terminal where curl reached the API through a proxy saw the CLI go out
+  directly and fail. On Node.js 22.21+ or 24+, when a proxy variable holds an `http://` or
+  `https://` URL, the CLI now restarts itself once with the switch on; input, output and exit status
+  pass through unchanged. `NODE_USE_ENV_PROXY=0` opts out. A `socks5://` or bare `host:port` value
+  is left alone, because Node.js refuses to start with it once the switch is on.
+- Split the 403 rows of the troubleshooting table by business code, including `40310` for an
+  account email that is not verified yet.
+
 ## 0.5.3
 
 ### Patch Changes
